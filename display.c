@@ -2,7 +2,6 @@
  * This file will be used to draw to the screen using ncurses
  */
 
-#include <ncurses.h>
 #include "display.h"
 
 WINDOW *main_screen;
@@ -37,6 +36,10 @@ void n3_end_screen(void){
     endwin();
 }
 
+int n3_getch(void){
+    return getch();
+}
+
 /* 
  * draws char to (x,y)
  * returns -1 on error
@@ -45,7 +48,7 @@ int n3_draw_xy(char c, int x, int y){
     if (x > COLS || x < 0 || y > LINES || y < 0) {
         return -1;
     } else {
-        mvaddch(x, y, c);   
+        mvaddch(x, y, c);
         return 0;
     }
 }
