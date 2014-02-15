@@ -19,7 +19,7 @@ int main (int argc, char *argv[]){
 
   struct timespec tim, tim2;
   tim.tv_sec = 0;
-  tim.tv_nsec = 100000000L;
+  tim.tv_nsec = 40000000L;
   
   n3_init_screen();
 
