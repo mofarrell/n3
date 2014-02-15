@@ -4,8 +4,8 @@
 #include "renderer.h"
 #include "display.h"
 
-#define WIDTH 768
-#define HEIGHT 768
+#define WIDTH 10
+#define HEIGHT 10
 
 static void finish(int sig) {
   n3_end_screen();
