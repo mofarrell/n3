@@ -23,13 +23,20 @@ void n3_init_screen(void){
 void n3_init_colors(void){
     start_color();
     init_color(0, 1000, 1000, 1000);
-    init_pair(1, COLOR_RED,     COLOR_BLACK);
+    init_color(1, 1000, 500, 500);
+    init_color(2, 500, 1000, 500);
+    init_color(3, 500, 500, 1000);
+    init_color(4, 500, 1000, 1000);
+    init_color(5, 1000, 500, 1000);
+    init_color(6, 1000, 1000, 500);
+    init_color(7, 500, 500, 500);
+    init_pair(1, 0, 0);
     init_pair(2, COLOR_GREEN,   COLOR_BLACK);
     init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
     init_pair(4, COLOR_BLUE,    COLOR_BLACK);
     init_pair(5, COLOR_CYAN,    COLOR_BLACK);
     init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(7, 0,   COLOR_BLACK);
+    init_pair(7, 7, 0);
     
 }
 
