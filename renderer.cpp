@@ -9,9 +9,9 @@
 const GLchar *vertex_shader[] = {
     "#version 330\n",
     "layout(location = 0) in vec3 vert;\n",
-    "//uniform mat4 mvp;\n",
+    "uniform mat4 mvp;\n",
     "void main(void) {\n",
-    "    gl_Position = vec4(vert.xy, -1.0f, 1.f);\n",
+    "    gl_Position = mvp * vec4(vert.xyz, 1.f);\n",
     "}"
 };
 
@@ -31,12 +31,17 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 static GLuint vertexbuffer;
 static GLuint vao;
+static glm::mat4 model;
 
 Renderer::Renderer(int width, int height)
     : ctx(),
       prog(vertex_shader, fragment_shader),
       width(width),
       height(height) {
+  proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
+  view = glm::mat4(1.0f);
+  model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+
   glGenFramebuffersEXT(1,&fbo);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
   glGenRenderbuffersEXT(1,&render_buf);
@@ -77,6 +82,8 @@ Renderer::Renderer(int width, int height)
   glEnableVertexAttribArray(0);
   //glDisableVertexAttribArray(0);
   glBindVertexArray(0);
+
+  mvpLocation = glGetUniformLocation(prog, "mvp");
 }
 
 
@@ -85,7 +92,11 @@ void Renderer::draw() {
     glViewport(0,0, width, height);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+  
+    std::cout << "asdfdsf" << std::endl;
+    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(model * view * proj));
 
+    std::cout << "asdfdsfi2" << std::endl;
     //glDrawBuffer(GL_FRAMEBUFFER_EXT);
     //std::cout  << "3.5: " << glGetError() << std::endl;
 
