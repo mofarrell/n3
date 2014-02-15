@@ -3,6 +3,8 @@
 #define RENDERER_H
 
 #include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
+#include <OpenGL/glext.h>
 #include "shader.h"
 #include "context.h"
 

@@ -18,7 +18,7 @@ const GLchar *vertex_shader[] = {
 
 const GLchar *fragment_shader[] = {
   "#version 330\n",
-  "out vec4 fragColor;\n",
+  "layout(location = 0) out vec4 fragColor;\n",
   "void main() {\n",
   "    fragColor = vec4(1.0, 0.0, 0.0, 1.0);\n",
   "}"
@@ -38,13 +38,22 @@ Renderer::Renderer(int width, int height)
       prog(vertex_shader, fragment_shader),
       width(width),
       height(height) {
-    glGenFramebuffers(1,&fbo);
-    glGenRenderbuffers(1,&render_buf);
-    glBindRenderbuffer(GL_RENDERBUFFER, render_buf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, width, height);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
-    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, render_buf);
+    glGenFramebuffersEXT(1,&fbo);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+    glGenRenderbuffersEXT(1,&render_buf);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, render_buf);
+    std::cout << glGetError() << std::endl;
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGBA8, width, height);
+    std::cout << glGetError() << std::endl;
+    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_RENDERBUFFER_EXT, render_buf);
+    // Set the list of draw buffers.
+    //GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    //glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    std::cout << glGetError() << std::endl;
 
+      // Always check that our framebuffer is ok
+    if(glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE)
+      std::cerr << "No Framebuffer" << std::endl;
     // Generate 1 buffer, put the resulting identifier in vertexbuffer
     glGenBuffers(1, &vertexbuffer);
      
@@ -57,11 +66,14 @@ Renderer::Renderer(int width, int height)
 
 
 void Renderer::draw() {
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+  glViewport(0,0, width, height);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+
 
   // Use the shaders.
   prog();
-
   // draw here
   
 // 1rst attribute buffer : vertices
@@ -81,22 +93,32 @@ void Renderer::draw() {
    
   glDisableVertexAttribArray(0);
 
-  std::vector<std::uint8_t> data(width*height*4);
+  std::vector<float> data(width*height*4);
+  std::cout << glGetError() << std::endl;
+  /*
   glReadBuffer(GL_COLOR_ATTACHMENT0);
-  glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
+  std::cout << glGetError() << std::endl;
+  glReadPixels(0,0,width,height,GL_BGRA,GL_FLOAT,data.data());
+  std::cout << glGetError() << std::endl;
 
-  n3_vector_draw(data, width, height);
+  //printf("%d\n", data[0]);
+  for (int i = 0; i < width*height*4; i ++) {
+    //std::cout << (float) data.data()[i] << std::endl;
+  }
+  */
+  //n3_vector_draw(data, width, height);
   // data is valid here!!
 
   // Return to onscreen rendering: (not really necessary)
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  std::cout << glGetError() << std::endl;
   //std::cout << "Rendered\n";
 }
 
 
 Renderer::~Renderer() {
-  glDeleteFramebuffers(1,&fbo);
-  glDeleteRenderbuffers(1,&render_buf);
+  glDeleteFramebuffersEXT(1,&fbo);
+  glDeleteRenderbuffersEXT(1,&render_buf);
 }
 
 

@@ -3,6 +3,8 @@
 #define SHADER_H
 
 #include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
+#include <OpenGL/glext.h>
 
 // Things defined in header so that templates work.
 
