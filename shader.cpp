@@ -1,5 +1,7 @@
 
-#include <gl/gl.h>
+#include <OpenGL/gl.h>
+#include <stddef.h>
+#include <iostream>
 // compiles shaders and handles them.
 
 class shader_prog {

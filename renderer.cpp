@@ -1,6 +1,9 @@
 
 #include "shader.h"
-#include <gl/gl.h>
+#include <stddef.h>
+#include <OpenGL/gl.h>
+#include <iostream>
+#include <vector>
 
 const GLchar *vertex_shader[] = {
     "void main(void) {\n",
@@ -52,11 +55,11 @@ class renderer {
   }
 
 
-  ~render() {
+  ~renderer() {
     glDeleteFramebuffers(1,&fbo);
     glDeleteRenderbuffers(1,&render_buf);
   }
-} 
+};
 
 
 
