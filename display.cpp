@@ -53,6 +53,7 @@ int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
             }
             mvaddch(y, x, '#');
         }
+       // mvaddnstr(y, 0, (char *)data.data(), width);
     }
     return 0;
 }
