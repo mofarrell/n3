@@ -3,30 +3,26 @@
 #include <iostream>
 #include <vector>
 
+#include "renderer.h"
 #include "shader.h"
 
 const GLchar *vertex_shader[] = {
-    "void main(void) {\n",
-    "    gl_Position = ftransform();\n",
-    "    gl_FrontColor = gl_Color;\n",
-    "}"
+  "void main(void) {\n",
+  "    gl_Position = ftransform();\n",
+  "    gl_FrontColor = gl_Color;\n",
+  "}"
 };
 
 const GLchar *color_shader[] = {
-    "void main() {\n",
-    "    gl_FragColor = gl_Color;\n",
-    "}"
+  "void main() {\n",
+  "    gl_FragColor = gl_Color;\n",
+  "}"
 };
 
-class renderer {
-  GLuint fbo, render_buf;
-  shader_prog prog;
-  int width, height;
-
-  renderer(int width, int height)
-      : prog(vertex_shader, color_shader),
-        width(width),
-        height(height) {
+renderer::renderer(int width, int height)
+    : prog(vertex_shader, color_shader),
+      width(width),
+      height(height) {
     glGenFramebuffers(1,&fbo);
     glGenRenderbuffers(1,&render_buf);
     glBindRenderbuffer(GL_RENDERBUFFER, render_buf);
@@ -36,30 +32,29 @@ class renderer {
   }
 
 
-  void draw() {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
-  
-    // Use the shaders.
-    prog();
+void renderer::draw() {
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
 
-    // draw here
+  // Use the shaders.
+  prog();
 
-    std::vector<std::uint8_t> data(width*height*4);
-    glReadBuffer(GL_COLOR_ATTACHMENT0);
-    glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
+  // draw here
 
-    // data is valid here!!
+  std::vector<std::uint8_t> data(width*height*4);
+  glReadBuffer(GL_COLOR_ATTACHMENT0);
+  glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
 
-    // Return to onscreen rendering: (not really necessary)
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
-  }
+  // data is valid here!!
+
+  // Return to onscreen rendering: (not really necessary)
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+}
 
 
-  ~renderer() {
-    glDeleteFramebuffers(1,&fbo);
-    glDeleteRenderbuffers(1,&render_buf);
-  }
-};
+renderer::~renderer() {
+  glDeleteFramebuffers(1,&fbo);
+  glDeleteRenderbuffers(1,&render_buf);
+}
 
 
 
