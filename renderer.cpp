@@ -11,7 +11,7 @@ const GLchar *vertex_shader[] = {
     "layout(location = 0) in vec4 vert;\n",
     "//uniform mat4 mvp;\n",
     "void main(void) {\n",
-    "    gl_Position = vec4(vert.xy, 0.f, 0.f);\n",
+    "    gl_Position = vec4(vert.xy, 1.f, 0.f);\n",
     "    \n",
     "}"
 };
@@ -54,7 +54,7 @@ Renderer::Renderer(int width, int height)
         // Always check that our framebuffer is ok
         if(glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE)
             std::cerr << "No Framebuffer" << std::endl;
-        
+
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
 
@@ -62,16 +62,28 @@ Renderer::Renderer(int width, int height)
         glGenBuffers(1, &vertexbuffer);
 
         // The following commands will talk about our 'vertexbuffer' buffer
-        glBindBuffer(GL_ARRAY_BUFFER, vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
         // Give our vertices to OpenGL.
+        glEnableVertexAttribArray(0);
         glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+        glVertexAttribPointer(
+                0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                3,                  // size
+                GL_FLOAT,           // type
+                GL_FALSE,           // normalized?
+                0,                  // stride
+                (void*)0            // array buffer offset
+                );
+
+        //glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
     }
 
 
 void Renderer::draw() {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-    glViewport(0,0, width, height);
+    //glViewport(0,0, width, height);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -82,24 +94,15 @@ void Renderer::draw() {
 
     // 1rst attribute buffer : vertices
     //std::cout  << "3.3: " << glGetError() << std::endl;
-    glEnableVertexAttribArray(0);
     //std::cout  << "3.4: " << glGetError() << std::endl;
-    glBindBuffer(GL_ARRAY_BUFFER, vao);
-    glVertexAttribPointer(
-            0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-            3,                  // size
-            GL_FLOAT,           // type
-            GL_FALSE,           // normalized?
-            0,                  // stride
-            (void*)0            // array buffer offset
-            );
-
+    glBindVertexArray(vao);
     // Draw the triangle !
     //std::cout  << "3.5: " << glGetError() << std::endl;
     glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
     //std::cout  << "4: " << glGetError() << std::endl;
+    glBindVertexArray(0);
 
-    glDisableVertexAttribArray(0);
+    // glDisableVertexAttribArray(0);
     //std::cout  << "5: " << glGetError() << std::endl;
 
     std::vector<std::uint8_t> data(width*height*4);
