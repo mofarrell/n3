@@ -2,6 +2,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <OpenGL/gl3.h>
+
 class shader_prog {
     GLuint vertex_shader, fragment_shader, prog;
 

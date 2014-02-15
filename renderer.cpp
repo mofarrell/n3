@@ -1,9 +1,9 @@
 
-#include "shader.h"
 #include <stddef.h>
-#include <OpenGL/gl.h>
 #include <iostream>
 #include <vector>
+
+#include "shader.h"
 
 const GLchar *vertex_shader[] = {
     "void main(void) {\n",
@@ -29,8 +29,8 @@ class renderer {
         height(height) {
     glGenFramebuffers(1,&fbo);
     glGenRenderbuffers(1,&render_buf);
-    glBindRenderbuffer(render_buf);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_BGRA8, width, height);
+    glBindRenderbuffer(GL_RENDERBUFFER, render_buf);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, width, height);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
     glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, render_buf);
   }
