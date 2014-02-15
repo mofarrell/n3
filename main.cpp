@@ -16,18 +16,18 @@ int main (int argc, char *argv[]){
 
   signal(SIGINT, finish);
 
-  //Renderer renderer(WIDTH, HEIGHT);
+  Renderer renderer(WIDTH, HEIGHT);
   for (int i = 0; i < 100; i ++) {
-    //renderer.draw();
-    //sleep(1);
+    renderer.draw();
+    sleep(1);
   }
-  //std::cout << "Hello World!\n";
 
   n3_init_screen();
   n3_draw_xy('t', 10, 10);
 
-  while(1)
-    sleep(1);
+  while(1) {
+    getch
+  }
 
   finish(0);
   return 0;
