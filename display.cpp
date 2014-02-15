@@ -46,12 +46,12 @@ int n3_getch(void){
 int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
     for (int y=0; y<height; y++){
         for (int x=0; x<width; x++){
-            if (data[(y*width+x)*4] > 0){
+            if (data[((height-y-1)*width+x)*4] > 0){
                 attron(COLOR_PAIR(1));
             } else {
                 attron(COLOR_PAIR(7));
             }
-            mvaddch(x*2, y*2, data[(y*width+x)*4]);
+            mvaddch(y, x, '#');
         }
     }
     return 0;
