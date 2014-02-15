@@ -4,6 +4,7 @@
 
 #include "renderer.h"
 #include "shader.h"
+#include "display.h"
 
 const GLchar *vertex_shader[] = {
   "#version 330\n",
@@ -84,11 +85,12 @@ void Renderer::draw() {
   glReadBuffer(GL_COLOR_ATTACHMENT0);
   glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
 
+  n3_vector_draw(data, width, height);
   // data is valid here!!
 
   // Return to onscreen rendering: (not really necessary)
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
-  std::cout << "Rendered\n";
+  //std::cout << "Rendered\n";
 }
 
 

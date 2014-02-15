@@ -40,6 +40,28 @@ int n3_getch(void){
     return getch();
 }
 
+/* vector drawer
+ */
+
+int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
+    for (int y=0; y<height; y++){
+        for (int x=0; x<width; x++){
+            if (data[(y*width+x)*4] > 0){
+                attron(COLOR_PAIR(1));
+            } else {
+                attron(COLOR_PAIR(4));
+            }
+            mvaddch(x*2, y*2, data[(y*width+x)*4]);
+        }
+    }
+    return 0;
+}
+
+int set_color(int color){
+    attron(COLOR_PAIR(color));
+    return 0;
+}
+
 /* 
  * draws char to (x,y)
  * returns -1 on error
@@ -53,6 +75,12 @@ int n3_draw_xy(char c, int x, int y){
     }
 }
 
+/*
+int n3_string_xy(char *str, int length, int x, int y){
+    mvaddchnstr(y, x, str, length);
+    return 0;
+}
+*/
 /* call every screen refresh
  */
 void n3_refresh(){
