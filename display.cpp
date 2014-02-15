@@ -5,6 +5,7 @@
 #include "display.h"
 
 WINDOW *main_screen;
+char sizes[] = ".:-=+*%%@#";
 
 /* private functions */
 void n3_init_colors(void);
@@ -30,13 +31,13 @@ void n3_init_colors(void){
     init_color(5, 1000, 500, 1000);
     init_color(6, 1000, 1000, 500);
     init_color(7, 500, 500, 500);
-    init_pair(1, 0, 0);
+    init_pair(7, 0, 0);
     init_pair(2, COLOR_GREEN,   COLOR_BLACK);
     init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
     init_pair(4, COLOR_BLUE,    COLOR_BLACK);
     init_pair(5, COLOR_CYAN,    COLOR_BLACK);
     init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(7, 7, 0);
+    init_pair(1, 7, 0);
     
 }
 
@@ -44,30 +45,29 @@ void n3_end_screen(void){
     endwin();
 }
 
-int n3_getch(void){
-    return getch();
+static inline int get_color(int r, int g, int b){
+    return r > 0 ? 1 : 7;
+}
+
+static inline char get_intensity_char(int intensity){
+    return sizes[9*intensity/255];
 }
 
 /* vector drawer
  */
-
 int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
     for (int y=0; y<height; y++){
         for (int x=0; x<width; x++){
-            if (data[((height-y-1)*width+x)*4] > 0){
-                attron(COLOR_PAIR(1));
-            } else {
-                attron(COLOR_PAIR(7));
-            }
-            mvaddch(y, x, '#');
+            char intensity = get_intensity_char(data[((height-y-1)*width+x)*4+3]);
+            int color = get_color(
+                    data[((height-y-1)*width+x)*4],
+                    data[((height-y-1)*width+x)*4+1],
+                    data[((height-y-1)*width+x)*4+2]);
+            attron(COLOR_PAIR(color));
+            mvaddch(y, x, intensity);
         }
        // mvaddnstr(y, 0, (char *)data.data(), width);
     }
-    return 0;
-}
-
-int set_color(int color){
-    attron(COLOR_PAIR(color));
     return 0;
 }
 
