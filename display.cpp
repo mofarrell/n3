@@ -17,7 +17,6 @@ void n3_init_screen(void){
     (void) cbreak();                // use sighandlers for keyboard kills
     (void) noecho();                // don't print to screen
     n3_init_colors();
-    mvaddch(0,0,'A');
     refresh();
 }
 
