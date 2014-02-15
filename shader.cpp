@@ -5,11 +5,11 @@
 #include "shader.h"
 // compiles shaders and handles them.
 
-shader_prog::operator GLuint() { return prog; }
+Shader_prog::operator GLuint() { return prog; }
 
-void shader_prog::operator()() { glUseProgram(prog); }
+void Shader_prog::operator()() { glUseProgram(prog); }
 
-shader_prog::~shader_prog() {
+Shader_prog::~Shader_prog() {
   glDeleteProgram(prog);
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);

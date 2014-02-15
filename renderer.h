@@ -5,16 +5,17 @@
 #include <OpenGL/gl3.h>
 #include "shader.h"
 
-class renderer {
+class Renderer {
+ public:
   GLuint fbo, render_buf;
-  shader_prog prog;
+  Shader_prog prog;
   int width, height;
 
-  renderer(int width, int height);
+  Renderer(int width, int height);
 
   void draw();
 
-  ~renderer();
+  ~Renderer();
 };
 
 #endif /* RENDERER_H */

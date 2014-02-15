@@ -19,20 +19,22 @@ const GLchar *color_shader[] = {
   "}"
 };
 
-renderer::renderer(int width, int height)
+Renderer::Renderer(int width, int height)
     : prog(vertex_shader, color_shader),
       width(width),
       height(height) {
+    std::cout << "here one!\n";
     glGenFramebuffers(1,&fbo);
     glGenRenderbuffers(1,&render_buf);
     glBindRenderbuffer(GL_RENDERBUFFER, render_buf);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, width, height);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
     glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, render_buf);
+    std::cout << "here one\n";
   }
 
 
-void renderer::draw() {
+void Renderer::draw() {
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
 
   // Use the shaders.
@@ -41,17 +43,18 @@ void renderer::draw() {
   // draw here
 
   std::vector<std::uint8_t> data(width*height*4);
-  glReadBuffer(GL_COLOR_ATTACHMENT0);
-  glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
+  //glReadBuffer(GL_COLOR_ATTACHMENT0);
+  //glReadPixels(0,0,width,height,GL_BGRA,GL_UNSIGNED_BYTE,&data[0]);
 
   // data is valid here!!
 
   // Return to onscreen rendering: (not really necessary)
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
+  std::cout << "Rendered\n";
 }
 
 
-renderer::~renderer() {
+Renderer::~Renderer() {
   glDeleteFramebuffers(1,&fbo);
   glDeleteRenderbuffers(1,&render_buf);
 }

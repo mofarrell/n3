@@ -6,7 +6,7 @@
 
 // Things defined in header so that templates work.
 
-class shader_prog {
+class Shader_prog {
   GLuint vertex_shader, fragment_shader, prog;
 
   template <int N>
@@ -28,7 +28,7 @@ class shader_prog {
     }
   public:
   template <int N, int M>
-    shader_prog(GLchar const *(&v_source)[N], GLchar const *(&f_source)[M]) {
+    Shader_prog(GLchar const *(&v_source)[N], GLchar const *(&f_source)[M]) {
       vertex_shader = compile(GL_VERTEX_SHADER, v_source);
       fragment_shader = compile(GL_FRAGMENT_SHADER, f_source);
       prog = glCreateProgram();
@@ -38,7 +38,7 @@ class shader_prog {
     }
   operator GLuint();
   void operator()();
-  ~shader_prog();
+  ~Shader_prog();
 };
 
 #endif /* SHADER_H */
