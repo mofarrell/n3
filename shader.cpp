@@ -22,6 +22,7 @@ GLuint shader_prog::compile(GLuint type, char const *(&source)[N]) {
   }
   return shader;
 }
+
 template <int N, int M>
 shader_prog::shader_prog(GLchar const *(&v_source)[N], GLchar const *(&f_source)[M]) {
   vertex_shader = compile(GL_VERTEX_SHADER, v_source);
@@ -33,6 +34,7 @@ shader_prog::shader_prog(GLchar const *(&v_source)[N], GLchar const *(&f_source)
 }
 
 shader_prog::operator GLuint() { return prog; }
+
 void shader_prog::operator()() { glUseProgram(prog); }
 
 shader_prog::~shader_prog() {
