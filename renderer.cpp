@@ -7,30 +7,32 @@
 #include "shader.h"
 
 const GLchar *vertex_shader[] = {
+  "#version 330\n",
   "void main(void) {\n",
-  "    gl_Position = ftransform();\n",
-  "    gl_FrontColor = gl_Color;\n",
+  "    \n",
+  "    \n",
   "}"
 };
 
-const GLchar *color_shader[] = {
+const GLchar *fragment_shader[] = {
+  "#version 330\n",
   "void main() {\n",
-  "    gl_FragColor = gl_Color;\n",
+  "    \n",
   "}"
 };
+
 
 Renderer::Renderer(int width, int height)
-    : prog(vertex_shader, color_shader),
+    : ctx(),
+      prog(vertex_shader, fragment_shader),
       width(width),
       height(height) {
-    std::cout << "here one!\n";
     glGenFramebuffers(1,&fbo);
     glGenRenderbuffers(1,&render_buf);
     glBindRenderbuffer(GL_RENDERBUFFER, render_buf);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, width, height);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
     glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, render_buf);
-    std::cout << "here one\n";
   }
 
 

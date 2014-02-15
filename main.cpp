@@ -8,6 +8,7 @@
 
 int main ()
 {
+  std::cout << "Hello World!\n";
   Renderer renderer(WIDTH, HEIGHT);
   for (int i = 0; i < 100; i ++) {
     renderer.draw();
