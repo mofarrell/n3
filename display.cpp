@@ -5,7 +5,6 @@
 #include "display.h"
 
 WINDOW *main_screen;
-char sizes[] = ".:-=+*%%@#";
 
 /* private functions */
 void n3_init_colors(void);
@@ -21,24 +20,22 @@ void n3_init_screen(void){
     refresh();
 }
 
+#define BITS_PER_COLOR 4
+#define COLOR_SIZE (1 << BITS_PER_COLOR)
+template <typename T>
+static inline int color_index(T r, T g, T b) {
+  return r*COLOR_SIZE*COLOR_SIZE + g*COLOR_SIZE + b;
+}
+
 void n3_init_colors(void){
-    start_color();
-    init_color(0, 1000, 1000, 1000);
-    init_color(1, 1000, 500, 500);
-    init_color(2, 500, 1000, 500);
-    init_color(3, 500, 500, 1000);
-    init_color(4, 500, 1000, 1000);
-    init_color(5, 1000, 500, 1000);
-    init_color(6, 1000, 1000, 500);
-    init_color(7, 500, 500, 500);
-    init_pair(7, 0, 0);
-    init_pair(2, COLOR_GREEN,   COLOR_BLACK);
-    init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
-    init_pair(4, COLOR_BLUE,    COLOR_BLACK);
-    init_pair(5, COLOR_CYAN,    COLOR_BLACK);
-    init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(1, 7, 0);
-    
+  for (int r = 0; r < COLOR_SIZE; r++) {
+    for (int g = 0; g < COLOR_SIZE; g++) {
+      for (int b = 0; b < COLOR_SIZE; b++) {
+        init_color(color_index(r,g,b), r*1000/COLOR_SIZE, g*1000/COLOR_SIZE, b*1000/COLOR_SIZE);
+        init_pair(color_index(r,g,b), color_index(r,g,b), color_index(r,g,b));  
+      }
+    }
+  }
 }
 
 void n3_end_screen(void){
@@ -46,11 +43,10 @@ void n3_end_screen(void){
 }
 
 static inline int get_color(int r, int g, int b){
-    return r > 0 ? 1 : 7;
-}
-
-static inline char get_intensity_char(int intensity){
-    return sizes[9*intensity/255];
+  return color_index(r >> (8-BITS_PER_COLOR), 
+                     g >> (8-BITS_PER_COLOR), 
+                     b >> (8-BITS_PER_COLOR)
+                    );
 }
 
 /* vector drawer
@@ -58,13 +54,12 @@ static inline char get_intensity_char(int intensity){
 int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
     for (int y=0; y<height; y++){
         for (int x=0; x<width; x++){
-            char intensity = get_intensity_char(data[((height-y-1)*width+x)*4+3]);
             int color = get_color(
                     data[((height-y-1)*width+x)*4],
                     data[((height-y-1)*width+x)*4+1],
                     data[((height-y-1)*width+x)*4+2]);
             attron(COLOR_PAIR(color));
-            mvaddch(y, x, intensity);
+            mvaddch(y, x, );
         }
        // mvaddnstr(y, 0, (char *)data.data(), width);
     }
