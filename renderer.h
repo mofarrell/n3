@@ -5,9 +5,6 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 #include <OpenGL/glext.h>
-#include "shader.h"
-#include "context.h"
-
 
 #define GLM_FORCE_RADIANS
 // glm::vec3, glm::vec4, glm::ivec4, glm::mat4
@@ -18,15 +15,22 @@
 // glm::value_ptr
 #include "glm/gtc/type_ptr.hpp"
 
+
+#include "shader.h"
+#include "context.h"
+#include "cube.h"
+
+
 class Renderer {
  public:
   Context ctx;
-  GLuint fbo, render_buf;
+  GLuint fbo, render_buf, depth_buf;
   Shader_prog prog;
   GLuint mvpLocation;
   int width, height;
   glm::mat4 view;
   glm::mat4 proj;
+  Cube cube;
 
   Renderer(int width, int height);
 
