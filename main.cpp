@@ -2,17 +2,33 @@
 #include <unistd.h>
 
 #include "renderer.h"
+#include "display.h"
 
 #define WIDTH 768
 #define HEIGHT 768
 
-int main ()
-{
-  Renderer renderer(WIDTH, HEIGHT);
+static void finish(int sig) {
+  n3_end_screen();
+  exit(0);
+}
+
+int main (int argc, char *argv[]){
+
+  signal(SIGINT, finish);
+
+  //Renderer renderer(WIDTH, HEIGHT);
   for (int i = 0; i < 100; i ++) {
-    renderer.draw();
-    sleep(1);
+    //renderer.draw();
+    //sleep(1);
   }
-  std::cout << "Hello World!\n";
+  //std::cout << "Hello World!\n";
+
+  n3_init_screen();
+  n3_draw_xy('t', 10, 10);
+
+  while(1)
+    sleep(1);
+
+  finish(0);
   return 0;
 }
