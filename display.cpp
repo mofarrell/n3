@@ -41,7 +41,16 @@ static inline int color_index2(int r, int g, int b) {
 
 void n3_init_colors(void){
   start_color();
-  for (int r = 0; r < COLOR_SIZE; r++) {
+   for (int i = 0; i < (1 << 8); i ++) {
+      int r = i >> 5;
+      int g = (i >> 2) & 0b111;
+      int b = i & 0b111;
+      init_color(i, r, g, b);
+      init_pair(i, i, i);
+  }
+  return;
+ 
+/*  for (int r = 0; r < COLOR_SIZE; r++) {
     for (int g = 0; g < COLOR_SIZE; g++) {
       for (int b = 0; b < COLOR_SIZE_BLUE; b++) {
         if (init_color(color_index(r,g,b), r*1000/(COLOR_SIZE - 1), g*1000/(COLOR_SIZE - 1), b*1000/(COLOR_SIZE_BLUE - 1)) == ERR){
@@ -51,7 +60,7 @@ void n3_init_colors(void){
         }  
       }
     }
-  }
+  }*/
 }
 
 void n3_end_screen(void){
@@ -59,10 +68,11 @@ void n3_end_screen(void){
 }
 
 static inline int get_color(int r, int g, int b){
-  return color_index2(r >> (8-BITS_PER_COLOR), 
+  return 16+r/48*36+g/48*6+b/48;
+  /*return color_index2(r >> (8-BITS_PER_COLOR), 
                      g >> (8-BITS_PER_COLOR), 
                      b >> (8-BITS_PER_COLOR)
-                    );
+                    );*/
 }
 
 /* vector drawer
