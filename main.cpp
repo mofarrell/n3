@@ -15,7 +15,7 @@ static void finish(int sig) {
 
 int main (int argc, char *argv[]){
 
-/*  signal(SIGINT, finish);
+  signal(SIGINT, finish);
 
   struct timespec tim, tim2;
   tim.tv_sec = 0;
@@ -30,7 +30,7 @@ int main (int argc, char *argv[]){
     refresh();
     nanosleep(&tim, &tim2);
  }
-*/
+
   finish(0);
   return 0;
 }

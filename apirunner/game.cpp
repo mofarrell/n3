@@ -8,6 +8,9 @@
 
 #define MAX_WIDTH 323
 #define MAX_NUM_CUBES 100
+
+Game::Game() : GameCubeVec() {}
+
 void Game::start() {
     player = Player::Player();
     Game::generateCubes(player.x,player.y,player.z);
@@ -42,17 +45,17 @@ void Game::gameLoop(Player player){
     /*incrementLevel */
     /* Make 3D */
 }
-void moveBoardX(int dir) {
+void Game::moveBoardX(int dir) {
     for (std::vector<GameCube *>::iterator it = GameCubeVec.begin();
          it != GameCubeVec.end(); 
          ++it) {
-        it.x += dir % MAX_WIDTH;
+        (*it)->x += dir % MAX_WIDTH;
     }
 }
-void moveBoardY(int dir) {
+void Game::moveBoardY(int dir) {
     for (std::vector<GameCube *>::iterator it = GameCubeVec.begin();
          it != GameCubeVec.end(); 
          ++it) {
-        it.y += dir % MAX_WIDTH;
+        (*it)->y += dir % MAX_WIDTH;
     }
 }

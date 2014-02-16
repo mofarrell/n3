@@ -5,10 +5,10 @@ class Game {
     public:
         Game();
         void start();
+        std::vector<GameCube *> GameCubeVec;
         void generateCubes(float x, float y, float z);
         ~Game();
         Player player;
-        std::vector<GameCube *>GameCubeVec;
         void gameLoop(Player player);
         void moveBoardX(int dir);
         void moveBoardY(int dir);
