@@ -23,7 +23,7 @@ const GLchar *fragment_shader[] = {
     "in vec3 fragmentColor;\n",
     "out vec4 color;\n",
     "void main() {\n",
-    "    color = vec4(fragmentColor, (pow(fragmentColor.r,2) + pow(fragmentColor.g,2) + pow(fragmentColor.b,2))/3.0);\n",
+    "    color = vec4(fragmentColor, 1.0); // (pow(fragmentColor.r,2) + pow(fragmentColor.g,2) + pow(fragmentColor.b,2))/3.0);\n",
     "}"
 };
 
