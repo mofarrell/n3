@@ -3,33 +3,10 @@
 #include <vector>
 
 #include "renderer.h"
-#include "shader.h"
 #include "display.h"
-
-const GLchar *vertex_shader[] = {
-    "#version 330\n",
-    "layout(location = 0) in vec3 vertex;\n",
-    "layout(location = 1) in vec3 vertexColor;\n",
-    "out vec3 fragmentColor;\n",
-    "uniform mat4 mvp;\n",
-    "void main(void) {\n",
-    "    gl_Position = mvp * vec4(vertex.xyz, 1.f);\n",
-    "    fragmentColor = vertexColor;\n",
-    "}"
-};
-
-const GLchar *fragment_shader[] = {
-    "#version 330\n",
-    "in vec3 fragmentColor;\n",
-    "out vec4 color;\n",
-    "void main() {\n",
-    "    color = vec4(fragmentColor, 1.0); // (pow(fragmentColor.r,2) + pow(fragmentColor.g,2) + pow(fragmentColor.b,2))/3.0);\n",
-    "}"
-};
 
 Renderer::Renderer(int width, int height)
     : ctx(),
-      prog(vertex_shader, fragment_shader),
       width(width),
       height(height) {
   proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -57,8 +34,6 @@ Renderer::Renderer(int width, int height)
   // Always check that our framebuffer is ok
   if(glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE)
       std::cerr << "No Framebuffer" << std::endl;
-  mvpLocation = glGetUniformLocation(prog, "mvp");
-
   cube.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
 }
 
@@ -68,13 +43,10 @@ void Renderer::draw() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Use the shaders.
-    prog();
-  
     cube.model = glm::rotate(cube.model, 0.05f, glm::vec3(0.1f, 0.4f, 1.0f));
-    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(proj * view * cube.model));
+  
     // draw here
-    cube.draw();
+    cube.draw(proj*view);
 
 
     std::vector<std::uint8_t> data(width*height*4);

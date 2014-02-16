@@ -16,7 +16,6 @@
 #include "glm/gtc/type_ptr.hpp"
 
 
-#include "shader.h"
 #include "context.h"
 #include "cube.h"
 
@@ -25,7 +24,6 @@ class Renderer {
  public:
   Context ctx;
   GLuint fbo, render_buf, depth_buf;
-  Shader_prog prog;
   GLuint mvpLocation;
   int width, height;
   glm::mat4 view;

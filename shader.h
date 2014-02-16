@@ -28,7 +28,7 @@ class Shader_prog {
       }
       return shader;
     }
-  public:
+ public:
   template <int N, int M>
     Shader_prog(GLchar const *(&v_source)[N], GLchar const *(&f_source)[M]) {
       vertex_shader = compile(GL_VERTEX_SHADER, v_source);

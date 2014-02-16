@@ -6,6 +6,9 @@
 #include <OpenGL/gl3ext.h>
 #include <OpenGL/glext.h>
 
+#include "colorshader.h"
+
+
 static const GLfloat vertices[] = {
   -1.0f,-1.0f,-1.0f,
   -1.0f,-1.0f, 1.0f,
@@ -99,9 +102,10 @@ class Cube {
   GLuint vbo;
   GLuint cbo;
   GLuint vao;
+  ColorShader shader;
   glm::mat4 model;
 
-  Cube () {
+  Cube () : shader() {
     model = glm::mat4(1.0f);
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -150,7 +154,11 @@ class Cube {
     glBindVertexArray(0);
   }
 
-  void draw() {
+  void draw(glm::mat4 viewProjection) {
+    shader.vp = viewProjection;
+    shader.model = model;
+    shader();
+
     glBindVertexArray(vao);
 
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/sizeof(GLfloat)/3); // Starting from vertex 0; vertices total -> 1 triangle
