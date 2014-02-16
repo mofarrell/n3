@@ -33,7 +33,7 @@ Renderer::Renderer(int width, int height)
       width(width),
       height(height) {
   proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
-  view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+  view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
 
   glGenFramebuffersEXT(1,&fbo);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
