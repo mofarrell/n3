@@ -13,7 +13,7 @@ Renderer::Renderer(int width, int height, void *game)
       cube(&lightedColorShader),
       triangle(&colorShader),
       game(game) {
-  proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
+  proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 50.f);
   view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
 
   glGenFramebuffersEXT(1,&fbo);

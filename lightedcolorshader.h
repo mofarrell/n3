@@ -32,7 +32,7 @@ namespace _LightedColorShader {
       "    vec3 rot_normal = mat3(model) * normal;\n",
       "    float f = max(dot(rot_normal, normalize(lightpos.xyz - gl_Position.xyz)), 0.0f);\n",
       "    float d = max(dot(rot_normal, normalize(-lightdir.xyz)), 0.0f);\n",
-      "    fragmentColor = (min(d + lightamb.rgb, vec3(1.0f,1.0f,1.0f))) * vertexColor;\n",
+      "    fragmentColor = (min(f + lightamb.rgb, vec3(1.0f,1.0f,1.0f))) * vertexColor;\n",
       "    gl_Position = projection * view * gl_Position;\n",
       "}"
   };

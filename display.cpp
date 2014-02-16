@@ -14,7 +14,7 @@ void n3_init_screen(void){
     keypad(stdscr, TRUE);           // keypad enabled
     (void) nodelay(main_screen, 1); // no blocking
     (void) nonl();                  // no new lines
-    (void) cbreak();                // use sighandlers for keyboard kills
+//    (void) cbreak();                // use sighandlers for keyboard kills
     (void) noecho();                // don't print to screen
     n3_init_colors();
     refresh();

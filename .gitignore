@@ -1,4 +1,5 @@
 *.swp
+apirunner/*.swp
 *.o
 n3
 .DS_Store
