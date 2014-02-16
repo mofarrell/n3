@@ -8,7 +8,9 @@
 Renderer::Renderer(int width, int height)
     : ctx(),
       width(width),
-      height(height) {
+      height(height),
+      cube(&lightedColorShader),
+      triangle(&colorShader) {
   proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
   view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
 
@@ -34,7 +36,10 @@ Renderer::Renderer(int width, int height)
   // Always check that our framebuffer is ok
   if(glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE)
       std::cerr << "No Framebuffer" << std::endl;
-  cube.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
+  cube.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+  triangle.model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f,0.5f,0.5f));
+  triangle.model = glm::translate(triangle.model, glm::vec3(0.f, -1.5f, 0.f));
+  triangle.model = glm::rotate(triangle.model, 1.1f, glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void Renderer::draw() {
@@ -43,10 +48,11 @@ void Renderer::draw() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    cube.model = glm::rotate(cube.model, 0.05f, glm::vec3(0.1f, 0.4f, 1.0f));
+    cube.model = glm::rotate(cube.model, 0.05f, glm::vec3(0.5f, 0.2f, 1.0f));
   
     // draw here
-    cube.draw(proj*view);
+    cube.draw(view, proj);
+    triangle.draw(view, proj);
 
 
     std::vector<std::uint8_t> data(width*height*4);

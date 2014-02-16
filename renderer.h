@@ -17,7 +17,10 @@
 
 
 #include "context.h"
+#include "colorshader.h"
+#include "lightedcolorshader.h"
 #include "cube.h"
+#include "triangle.h"
 
 
 class Renderer {
@@ -28,7 +31,10 @@ class Renderer {
   int width, height;
   glm::mat4 view;
   glm::mat4 proj;
+  LightedColorShader lightedColorShader;
+  ColorShader colorShader;
   Cube cube;
+  Triangle triangle;
 
   Renderer(int width, int height);
 

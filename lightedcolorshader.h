@@ -1,57 +1,96 @@
 
-#ifndef COLORSHADER_H
-#define COLORSHADER_H
+#ifndef LIGHTEDCOLORSHADER_H
+#define LIGHTEDCOLORSHADER_H
+
+#define GLM_FORCE_RADIANS
+// glm::vec3, glm::vec4, glm::ivec4, glm::mat4
+#include "glm/glm.hpp"
+// glm::perspective
+// glm::translate, glm::rotate, glm::scale
+#include "glm/gtc/matrix_transform.hpp"
+// glm::value_ptr
+#include "glm/gtc/type_ptr.hpp"
 
 #include "shader.h"
 
-static const GLchar *vertex_shader[] = {
-    "#version 330\n",
-    "layout(location = 0) in vec3 vertex;\n",
-    "layout(location = 1) in vec3 vertexColor;\n",
-    "out vec3 fragmentColor;\n",
-    "uniform mat4 model;\n",
-    "uniform mat4 vp;\n",
-    "void main(void) {\n",
-    "    gl_Position = vp * model * vec4(vertex.xyz, 1.f);\n",
-    "    fragmentColor = vertexColor;\n",
-    "}"
-};
+namespace _LightedColorShader {
+  static const GLchar *vertex_shader[] = {
+      "#version 330\n",
+      "const int MAXLIGHTS = 4;\n",
+      "layout(location = 0) in vec3 vertex;\n",
+      "layout(location = 1) in vec3 vertexColor;\n",
+      "layout(location = 2) in vec3 normal;\n",
+      "out vec3 fragmentColor;\n",
+      "uniform mat4 model;\n",
+      "uniform mat4 view;\n",
+      "uniform mat4 projection;\n",
+      "uniform vec4 lightpos;\n",
+      "uniform vec4 lightdir;\n",
+      "uniform vec4 lightamb;\n",
+      "void main(void) {\n",
+      "    gl_Position = model * vec4(vertex.xyz, 1.f);\n",
+      "    vec3 rot_normal = mat3(model) * normal;\n",
+      "    float f = max(dot(rot_normal, normalize(lightpos.xyz - gl_Position.xyz)), 0.0f);\n",
+      "    float d = max(dot(rot_normal, normalize(-lightdir.xyz)), 0.0f);\n",
+      "    fragmentColor = (min(d + lightamb.rgb, vec3(1.0f,1.0f,1.0f))) * vertexColor;\n",
+      "    gl_Position = projection * view * gl_Position;\n",
+      "}"
+  };
 
-static const GLchar *fragment_shader[] = {
-    "#version 330\n",
-    "in vec3 fragmentColor;\n",
-    "out vec4 color;\n",
-    "void main() {\n",
-    "    color = vec4(fragmentColor, 1.0); // (pow(fragmentColor.r,2) + pow(fragmentColor.g,2) + pow(fragmentColor.b,2))/3.0);\n",
-    "}"
-};
+  static const GLchar *fragment_shader[] = {
+      "#version 330\n",
+      "in vec3 fragmentColor;\n",
+      "out vec4 color;\n",
+      "void main() {\n",
+      "    color = vec4(fragmentColor, 1.0); // (pow(fragmentColor.r,2) + pow(fragmentColor.g,2) + pow(fragmentColor.b,2))/3.0);\n",
+      "}"
+  };
 
-class ColorShader {
+  static GLfloat lightpos[] = {10.0f, 10.0f, -10.0f, 1.0f};
+  static GLfloat lightdir[] = {1.0f, 0.0f, 0.0f, 1.0f};
+  static GLfloat lightamb[] = {0.2f, 0.2f, 0.2f, 1.0f};
+}
+
+class LightedColorShader {
  public:
   GLuint modelLocation;
-  GLuint vpLocation;
-  glm::mat4 vp;
+  GLuint viewLocation;
+  GLuint projectionLocation;
+  GLuint lightposLocation;
+  GLuint lightdirLocation;
+  GLuint lightambLocation;
+  glm::mat4 view;
+  glm::mat4 projection;
   glm::mat4 model;
   Shader_prog prog;
 
-  ColorShader()
-      : prog(vertex_shader, fragment_shader) {
+  LightedColorShader()
+      : prog(_LightedColorShader::vertex_shader, _LightedColorShader::fragment_shader) {
     prog();
     modelLocation = glGetUniformLocation(prog, "model");
-    vpLocation = glGetUniformLocation(prog, "vp");
+    viewLocation = glGetUniformLocation(prog, "view");
+    projectionLocation = glGetUniformLocation(prog, "projection");
+    lightposLocation = glGetUniformLocation(prog, "lightpos");
+    lightdirLocation = glGetUniformLocation(prog, "lightdir");
+    lightambLocation = glGetUniformLocation(prog, "lightamb");
   }
   
   void operator()() {
     prog();
-    glUniformMatrix4fv(vpLocation, 1, GL_FALSE, glm::value_ptr(vp));
+    glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+    glUniform4fv(lightposLocation, 1, _LightedColorShader::lightpos);
+    glUniform4fv(lightdirLocation, 1, _LightedColorShader::lightdir);
+    glUniform4fv(lightambLocation, 1, _LightedColorShader::lightamb);
   }
   
 
-  ~ColorShader() {
+  ~LightedColorShader() {
   }
 };
 
 
-#endif /* COLORSHADER_H */
+#endif /* LIGHTEDCOLORSHADER_H */
 
