@@ -15,7 +15,7 @@ static void finish(int sig) {
 
 int main (int argc, char *argv[]){
 
-  signal(SIGINT, finish);
+/*  signal(SIGINT, finish);
 
   struct timespec tim, tim2;
   tim.tv_sec = 0;
@@ -29,11 +29,8 @@ int main (int argc, char *argv[]){
     renderer.draw();
     refresh();
     nanosleep(&tim, &tim2);
-    //n3_draw_xy('w', 0, 0);
-    //n3_refresh();
-    //sleep(1);
-  }
-
+ }
+*/
   finish(0);
   return 0;
 }
