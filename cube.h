@@ -5,6 +5,9 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 #include <OpenGL/glext.h>
+#include <time.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "lightedcolorshader.h"
 
@@ -53,20 +56,13 @@ namespace _Cube {
     1.0f,-1.0f, 1.0f
   };
 
-  static const GLfloat colors[] = {
-    1.0f,  0.0f,  0.0f,
-    1.0f,  0.0f,  0.0f,
-    1.0f,  0.0f,  0.0f,
-    1.0f,  0.0f,  0.0f,
-    1.0f,  0.0f,  0.0f,
-    1.0f,  0.0f,  0.0f,
-
-    0.0f,  1.0f,  0.0f,
-    0.0f,  1.0f,  0.0f,
-    0.0f,  1.0f,  0.0f,
-    0.0f,  1.0f,  0.0f,
-    0.0f,  1.0f,  0.0f,
-    0.0f,  1.0f,  0.0f,
+  static const GLfloat colors_b[] = {
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
 
     0.0f,  0.0f,  1.0f,
     0.0f,  0.0f,  1.0f,
@@ -75,26 +71,169 @@ namespace _Cube {
     0.0f,  0.0f,  1.0f,
     0.0f,  0.0f,  1.0f,
 
-    1.0f,  1.0f,  0.0f,
-    1.0f,  1.0f,  0.0f,
-    1.0f,  1.0f,  0.0f,
-    1.0f,  1.0f,  0.0f,
-    1.0f,  1.0f,  0.0f,
-    1.0f,  1.0f,  0.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
 
-    0.0f,  1.0f,  1.0f,
-    0.0f,  1.0f,  1.0f,
-    0.0f,  1.0f,  1.0f,
-    0.0f,  1.0f,  1.0f,
-    0.0f,  1.0f,  1.0f,
-    0.0f,  1.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
 
-    1.0f,  0.0f,  1.0f,
-    1.0f,  0.0f,  1.0f,
-    1.0f,  0.0f,  1.0f,
-    1.0f,  0.0f,  1.0f,
-    1.0f,  0.0f,  1.0f,
-    1.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+    0.0f,  0.0f,  1.0f,
+  };
+  static const GLfloat colors_g[] = {
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+                
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+                
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+                
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+                
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+                
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+    0.0f,  1.0f,  0.0f,
+  };
+  static const GLfloat colors_r[] = {
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+            
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+            
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+            
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+            
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+            
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+      1.0f, 0.0f,  0.0f,
+  };
+  static const GLfloat colors_w[] = {
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+  };
+
+  static const GLfloat *colors[] = {
+    colors_r,
+    colors_g,
+    colors_b,
+    colors_w
   };
 
   static const GLfloat normals[] = {
@@ -184,8 +323,10 @@ class Cube {
 
     glBindBuffer(GL_ARRAY_BUFFER, cbo);
 
+    int i = rand()%4;
+
     // Give our colors to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(_Cube::colors), _Cube::colors, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(_Cube::colors_w), _Cube::colors[i], GL_STATIC_DRAW);
     glVertexAttribPointer(
             1,                  // attribute 1. No particular reason for 1, but must match the layout in the shader.
             3,                  // size
