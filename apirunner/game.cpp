@@ -5,14 +5,14 @@
 #include "../cube.h"
 #include "game.hpp"
 
-#define MAX_WIDTH 100
+#define MAX_WIDTH 50
 #define MAX_NUM_CUBES 1000
 
 #define WIDTH COLS
 #define HEIGHT LINES
 
 Game::Game()
-      : GameCubeVec(), renderer(WIDTH, HEIGHT, this) {
+      : GameCubeVec(), renderer(WIDTH, HEIGHT, this), direction(0.0f, 0.0f,0.1f) {
     int i = MAX_NUM_CUBES;
     float curr_z = 20.0f;
     srand (time(NULL));
@@ -26,7 +26,7 @@ Game::Game()
         float rand_y = float(rand() % MAX_WIDTH - (MAX_WIDTH/2));
         float rand_z = (float)(rand() % 100);
         //std::printf("%.2f %.2f %.2f\n", rand_x, rand_y, curr_z);
-        GameCubeVec.push_back(new GameCube(rand_x, rand_y, rand_z, &renderer.lightedColorShader));
+        GameCubeVec.push_back(new GameCube(glm::vec3(rand_x, rand_y, -rand_z), &renderer.lightedColorShader));
     }
     
     gameLoop();
@@ -53,37 +53,33 @@ void Game::render() {
   renderCubes();
 } 
 
-static float blah = 0.f;
 
 void Game::gameLoop(){
     struct timespec tim, tim2;
     tim.tv_sec = 0;
-    tim.tv_nsec = 5000000L;
+    tim.tv_nsec = 500000L;
  
 
     while(1) {
-      blah += 0.5f;
-      renderer.view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, blah));
+      //renderer.view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, blah));
       renderer.draw();
       refresh();
       nanosleep(&tim, &tim2);
+      update();
     }
     //player.move(player.x, player.y, player.z);
     /*StartTimer */
     /*incrementLevel */
     /* Make 3D */
 }
-void Game::moveBoardX(int dir) {
+
+void Game::update() {
     for (std::vector<GameCube *>::iterator it = GameCubeVec.begin();
          it != GameCubeVec.end(); 
          ++it) {
-        (*it)->x += dir % MAX_WIDTH;
+        (*it)->position += direction;
+        (*it)->position.z = ((*it)->position.z > 0.0f) ? -100.0f : ((*it)->position.z);
     }
 }
-void Game::moveBoardY(int dir) {
-    for (std::vector<GameCube *>::iterator it = GameCubeVec.begin();
-         it != GameCubeVec.end(); 
-         ++it) {
-        (*it)->y += dir % MAX_WIDTH;
-    }
-}
+
+

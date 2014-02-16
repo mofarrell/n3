@@ -6,10 +6,10 @@
 
 class GameCube {
     public:
-        GameCube(float x, float y, float z, LightedColorShader *shader);
+        GameCube(glm::vec3 position, LightedColorShader *shader);
         Cube cube;
         void draw(glm::mat4 view, glm::mat4 proj);
-        float x, y, z;
+        glm::vec3 position;
         ~GameCube();
         void cubeRender();
 };

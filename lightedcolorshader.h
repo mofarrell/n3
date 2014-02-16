@@ -46,7 +46,7 @@ namespace _LightedColorShader {
       "}"
   };
 
-  static GLfloat lightpos[] = {10.0f, 10.0f, -10.0f, 1.0f};
+  static GLfloat lightpos[] = {10.0f, 10.0f, -50.0f, 1.0f};
   static GLfloat lightdir[] = {1.0f, 0.0f, 0.0f, 1.0f};
   static GLfloat lightamb[] = {0.2f, 0.2f, 0.2f, 1.0f};
 }
@@ -73,6 +73,10 @@ class LightedColorShader {
     lightposLocation = glGetUniformLocation(prog, "lightpos");
     lightdirLocation = glGetUniformLocation(prog, "lightdir");
     lightambLocation = glGetUniformLocation(prog, "lightamb");
+
+    glUniform4fv(lightposLocation, 1, _LightedColorShader::lightpos);
+    glUniform4fv(lightdirLocation, 1, _LightedColorShader::lightdir);
+    glUniform4fv(lightambLocation, 1, _LightedColorShader::lightamb);
   }
   
   void operator()() {
@@ -80,10 +84,6 @@ class LightedColorShader {
     glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
-
-    glUniform4fv(lightposLocation, 1, _LightedColorShader::lightpos);
-    glUniform4fv(lightdirLocation, 1, _LightedColorShader::lightdir);
-    glUniform4fv(lightambLocation, 1, _LightedColorShader::lightamb);
   }
   
 

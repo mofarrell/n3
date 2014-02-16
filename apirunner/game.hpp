@@ -14,9 +14,9 @@ class Game {
         ~Game();
         Player player;
         Renderer renderer;
+        glm::vec3 direction;
         void gameLoop();
-        void moveBoardX(int dir);
-        void moveBoardY(int dir);
+        void update();
 };
 
 #endif /*GAME_HPP*/
