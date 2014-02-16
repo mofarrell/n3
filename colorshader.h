@@ -2,6 +2,15 @@
 #ifndef COLORSHADER_H
 #define COLORSHADER_H
 
+#define GLM_FORCE_RADIANS
+// glm::vec3, glm::vec4, glm::ivec4, glm::mat4
+#include "glm/glm.hpp"
+// glm::perspective
+// glm::translate, glm::rotate, glm::scale
+#include "glm/gtc/matrix_transform.hpp"
+// glm::value_ptr
+#include "glm/gtc/type_ptr.hpp"
+
 #include "shader.h"
 
 static const GLchar *vertex_shader[] = {

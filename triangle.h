@@ -1,6 +1,6 @@
 
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
 
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
@@ -16,50 +16,12 @@ static const GLfloat vertices[] = {
 };
 
 static const GLfloat colors[] = {
-  1.0f,  0.0f,  0.0f,
-  1.0f,  0.0f,  0.0f,
-  1.0f,  0.0f,  0.0f,
-  1.0f,  0.0f,  0.0f,
-  1.0f,  0.0f,  0.0f,
-  1.0f,  0.0f,  0.0f,
-
-  0.0f,  1.0f,  0.0f,
-  0.0f,  1.0f,  0.0f,
-  0.0f,  1.0f,  0.0f,
-  0.0f,  1.0f,  0.0f,
-  0.0f,  1.0f,  0.0f,
-  0.0f,  1.0f,  0.0f,
-
-  0.0f,  0.0f,  1.0f,
-  0.0f,  0.0f,  1.0f,
-  0.0f,  0.0f,  1.0f,
-  0.0f,  0.0f,  1.0f,
-  0.0f,  0.0f,  1.0f,
-  0.0f,  0.0f,  1.0f,
-
-  1.0f,  1.0f,  0.0f,
-  1.0f,  1.0f,  0.0f,
-  1.0f,  1.0f,  0.0f,
-  1.0f,  1.0f,  0.0f,
-  1.0f,  1.0f,  0.0f,
-  1.0f,  1.0f,  0.0f,
-
-  0.0f,  1.0f,  1.0f,
-  0.0f,  1.0f,  1.0f,
-  0.0f,  1.0f,  1.0f,
-  0.0f,  1.0f,  1.0f,
-  0.0f,  1.0f,  1.0f,
-  0.0f,  1.0f,  1.0f,
-
-  1.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  1.0f,
+  1.0f,  1.0f,  1.0f,
+  1.0f,  1.0f,  1.0f,
+  1.0f,  1.0f,  1.0f,
 };
 
-class Cube {
+class Triangle {
  public:
   GLuint vbo;
   GLuint cbo;
@@ -67,7 +29,7 @@ class Cube {
   ColorShader shader;
   glm::mat4 model;
 
-  Cube () : shader() {
+  Triangle () : shader() {
     model = glm::mat4(1.0f);
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -128,9 +90,9 @@ class Cube {
     glBindVertexArray(0);
   }
 
-  ~Cube () {
+  ~Triangle () {
   }
 };
 
-#endif /* CUBE_H */
+#endif /* TRIANGLE_H */
 
