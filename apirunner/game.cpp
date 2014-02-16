@@ -12,7 +12,7 @@
 #define HEIGHT LINES
 
 Game::Game()
-      : GameCubeVec(), renderer(WIDTH, HEIGHT, this), direction(0.0f, 0.0f,0.1f) {
+      : GameCubeVec(), renderer(WIDTH, HEIGHT, this), direction(0.0f, 0.0f,0.2f) {
     int i = MAX_NUM_CUBES;
     float curr_z = 20.0f;
     srand (time(NULL));
