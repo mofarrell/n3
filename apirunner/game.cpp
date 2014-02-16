@@ -14,6 +14,8 @@
 #define WIDTH COLS
 #define HEIGHT LINES
 
+WINDOW *menu_win;
+
 Game::Game()
       : GameCubeVec(), renderer(WIDTH, HEIGHT, this), direction(0.0f, 0.0f,0.2f) {
     isDead = true;
@@ -34,7 +36,7 @@ Game::Game()
         //std::printf("%.2f %.2f %.2f\n", rand_x, rand_y, curr_z);
         GameCubeVec.push_back(new GameCube(glm::vec3(rand_x, rand_y, -rand_z), &renderer.lightedColorShader));
     }
-    
+    //menu_win = initscr();
     gameLoop();
 }
 
@@ -58,6 +60,8 @@ void Game::renderCubes() {
 
 float rot_curr;
 
+//const char *menu[] = {"_________      ______               ____________","_________      ______               ____________         ","_________      ______               ____________         ","```MMMMMM   666MMMMMMbbb         666MMMMMMMMMMMMbbb      ","```MMMMMM   666MMMMMMbbb         666MMMMMMMMMMMMbbb      ","```MMMMMM   666MMMMMMbbb         666MMMMMMMMMMMMbbb      ","   MMMMMMMMM999   ```MMMbbb   MMMMMM'''      ```MMMbbb   ","   MMMMMMMMM999   ```MMMbbb   MMMMMM'''      ```MMMbbb   ","   MMMMMMMMM999   ```MMMbbb   MMMMMM'''      ```MMMbbb   ","   MMMMMM'''         MMMMMM                     MMMMMM   ","   MMMMMM'''         MMMMMM                     MMMMMM   ","   MMMMMM'''         MMMMMM                     MMMMMM   ","   MMMMMM            MMMMMM                  ...MMM999   ","   MMMMMM            MMMMMM                  ...MMM999   ","   MMMMMM            MMMMMM                  ...MMM999   ","   MMMMMM            MMMMMM         MMMMMMMMMMMM         ","   MMMMMM            MMMMMM         MMMMMMMMMMMM         ","   MMMMMM            MMMMMM         MMMMMMMMMMMM         ","   MMMMMM            MMMMMM                  ```MMMbbb   ","   MMMMMM            MMMMMM                  ```MMMbbb   ","   MMMMMM            MMMMMM                  ```MMMbbb   ","___MMMMMM___      ___MMMMMM___                  MMMMMM   ","___MMMMMM___      ___MMMMMM___                  MMMMMM   ","___MMMMMM___      ___MMMMMM___                  MMMMMM   ","                                                MMMMMM   ","                                                MMMMMM   ","                                                MMMMMM   ","                              MMMMMM...      ,,,MMM999   ","                              MMMMMM...      ,,,MMM999   ","                              MMMMMM...      ,,,MMM999   ","                                 YYYMMMMMMMMMMMM999      ","                                 YYYMMMMMMMMMMMM999      ","                                 YYYMMMMMMMMMMMM999"};
+
 void Game::renderMenu() {
     /* CONNELLS SHIT HERE */
     /*for (std::vector<GameCube *>::iterator it = GameCubeVec.begin();
@@ -69,6 +73,11 @@ void Game::renderMenu() {
     rot_curr = fmod((rot_curr+.005),(2*3.1415));
     GameCubeVec[0]->draw_big(renderer.view, renderer.proj);
     GameCubeVec[0]->draw_rotate(renderer.view, renderer.proj, rot_curr);
+    for (int j =0; j < 32; j++) {
+      
+      //mvaddstr(j+10, 10, menu[j]);
+    }
+    //refresh();
 }
 
 void Game::renderScore(){

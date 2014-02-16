@@ -47,7 +47,7 @@ namespace _LightedColorShader {
   };
 
   static GLfloat lightpos[] = {10.0f, 10.0f, -50.0f, 1.0f};
-  static GLfloat lightdir[] = {1.0f, -0.4f, -0.4f, 1.0f};
+  static GLfloat lightdir[] = {1.0f, -0.7f, -0.7f, 1.0f};
   static GLfloat lightamb[] = {0.2f, 0.2f, 0.2f, 1.0f};
 }
 
