@@ -4,13 +4,15 @@
 
 #include "renderer.h"
 #include "display.h"
+#include "apirunner/game.hpp"
 
-Renderer::Renderer(int width, int height)
+Renderer::Renderer(int width, int height, void *game)
     : ctx(),
       width(width),
       height(height),
       cube(&lightedColorShader),
-      triangle(&colorShader) {
+      triangle(&colorShader),
+      game(game) {
   proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.f);
   view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -2.0f));
 
@@ -50,10 +52,7 @@ void Renderer::draw() {
 
     cube.model = glm::rotate(cube.model, 0.05f, glm::vec3(0.5f, 0.2f, 1.0f));
   
-    // draw here
-    cube.draw(view, proj);
-    triangle.draw(view, proj);
-
+    ((Game *)game)->render();
 
     std::vector<std::uint8_t> data(width*height*4);
     glReadPixels(0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data.data());

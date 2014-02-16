@@ -22,7 +22,6 @@
 #include "cube.h"
 #include "triangle.h"
 
-
 class Renderer {
  public:
   Context ctx;
@@ -35,8 +34,9 @@ class Renderer {
   ColorShader colorShader;
   Cube cube;
   Triangle triangle;
+  void *game;
 
-  Renderer(int width, int height);
+  Renderer(int width, int height, void *game);
 
   void draw();
 

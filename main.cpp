@@ -4,9 +4,7 @@
 
 #include "renderer.h"
 #include "display.h"
-
-#define WIDTH COLS
-#define HEIGHT LINES
+#include "apirunner/game.hpp"
 
 static void finish(int sig) {
   n3_end_screen();
@@ -17,19 +15,12 @@ int main (int argc, char *argv[]){
 
   signal(SIGINT, finish);
 
-  struct timespec tim, tim2;
-  tim.tv_sec = 0;
-  tim.tv_nsec = 40000000L;
-  
+
   n3_init_screen();
+  
+  Game *mygame = new Game();
 
-  Renderer renderer(WIDTH, HEIGHT);
-
-  while(1) {
-    renderer.draw();
-    refresh();
-    nanosleep(&tim, &tim2);
- }
+  delete mygame;
 
   finish(0);
   return 0;

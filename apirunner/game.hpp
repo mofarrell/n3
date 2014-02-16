@@ -1,15 +1,20 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 #include "gamecube.hpp"
+#include "player.hpp"
+#include "../renderer.h"
+#include "../display.h"
+
 class Game {
     public:
         Game();
-        void start();
         std::vector<GameCube *> GameCubeVec;
-        void generateCubes(float x, float y, float z);
+        void renderCubes();
+        void render();
         ~Game();
         Player player;
-        void gameLoop(Player player);
+        Renderer renderer;
+        void gameLoop();
         void moveBoardX(int dir);
         void moveBoardY(int dir);
 };
