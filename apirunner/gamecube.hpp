@@ -1,7 +1,9 @@
 #ifndef GAMECUBE_HPP
 #define GAMECUBE_HPP
 
+#include <vector>
 #include "../cube.h"
+#include "../obj.h"
 #include "../lightedcolorshader.h"
 
 class GameCube {

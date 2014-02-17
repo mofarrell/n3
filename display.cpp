@@ -46,7 +46,7 @@ void n3_init_colors(void){
       int g = (i >> 2) & 0b111;
       int b = i & 0b111;
       init_color(i, r, g, b);
-      init_pair(i, i, i);
+      init_pair(i, i, 0); // 0 --> i if you want pure blocks, else # ascii
   }
   return;
  

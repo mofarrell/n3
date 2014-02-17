@@ -5,6 +5,7 @@
 #include "../renderer.h"
 #include "../display.h"
 #include "../triangle.h"
+#include "../obj.h"
 
 class Game {
     public:
@@ -25,6 +26,7 @@ class Game {
         long level;
         void gameOver();
         glm::vec3 random_vec();
+        Obj obj;
 };
 
 #endif /*GAME_HPP*/
