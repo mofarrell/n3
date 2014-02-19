@@ -26,9 +26,19 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <OpenGL/gl3.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
 #include <OpenGL/gl3ext.h>
 #include <OpenGL/glext.h>
+#include <OpenGL/gl3.h>
+#else
+#ifdef _WIN32
+  #include <windows.h>
+#endif
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
+
 #include <iostream>
 
 // Things defined in header so that templates work.

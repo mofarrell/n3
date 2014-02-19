@@ -26,9 +26,19 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <OpenGL/gl3.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
 #include <OpenGL/gl3ext.h>
 #include <OpenGL/glext.h>
+#include <OpenGL/gl3.h>
+#include "context.h"
+#else
+#ifdef _WIN32
+  #include <windows.h>
+#endif
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
 
 #define GLM_FORCE_RADIANS
 // glm::vec3, glm::vec4, glm::ivec4, glm::mat4
@@ -40,7 +50,6 @@
 #include "glm/gtc/type_ptr.hpp"
 
 
-#include "context.h"
 #include "colorshader.h"
 #include "lightedcolorshader.h"
 #include "cube.h"
