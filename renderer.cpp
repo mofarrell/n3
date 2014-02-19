@@ -42,13 +42,23 @@ Renderer::Renderer(int width, int height, void *game)
 
   glGenFramebuffersEXT(1,&fbo);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-  glGenRenderbuffersEXT(1,&render_buf);
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, render_buf);
+  //glGenRenderbuffersEXT(1,&render_buf);
+  //glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, render_buf);
+  glGenTextures(1, &tex_buf);
+  glBindTexture(GL_TEXTURE_2D, tex_buf);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, 0);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+  glFramebufferTexture(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0,
+    tex_buf, 0);
   //std::cout << "1: " << glGetError() << std::endl;
-  glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGBA8, width, height);
+  //glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGBA8, width, height);
   //std::cout << "2: " <<  glGetError() << std::endl;
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_RENDERBUFFER_EXT, render_buf);
+  //glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+  //glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_RENDERBUFFER_EXT, render_buf);
 
   if (1) {
     glGenRenderbuffersEXT(1, &depth_buf);
@@ -69,6 +79,7 @@ Renderer::Renderer(int width, int height, void *game)
 }
 
 void Renderer::draw() {
+    
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
     glViewport(0,0, width, height);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -79,7 +90,9 @@ void Renderer::draw() {
     ((Game *)game)->render();
 
     std::vector<std::uint8_t> data(width*height*4);
-    glReadPixels(0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data.data());
+    //glReadPixels(0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,data.data());
+    glBindTexture(GL_TEXTURE_2D, tex_buf);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
 
     // data is valid here!!
     n3_vector_draw(data, width, height);

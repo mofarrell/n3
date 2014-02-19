@@ -50,6 +50,7 @@ class Renderer {
  public:
   Context ctx;
   GLuint fbo, render_buf, depth_buf;
+  GLuint tex_buf;
   GLuint mvpLocation;
   int width, height;
   glm::mat4 view;

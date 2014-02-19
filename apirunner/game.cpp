@@ -132,7 +132,7 @@ void Game::gameOver(){
 void Game::gameLoop(){
     struct timespec tim, tim2;
     tim.tv_sec = 0;
-    tim.tv_nsec = 50000L;
+    tim.tv_nsec = 500000L;
  
     glm::vec2 delta;
 
@@ -142,15 +142,23 @@ void Game::gameLoop(){
       delta = glm::vec2(0.0f,0.0f);
       float diff = 1.0f;
       switch(c) {
+        case('h'):
+        case('a'):
         case(KEY_LEFT):
             delta.x += diff;
             break;
+        case('l'):
+        case('d'):
         case(KEY_RIGHT):
             delta.x -= diff;
             break;            
+        case('k'):
+        case('w'):
         case(KEY_UP):
             delta.y -= diff;
             break;
+        case('j'):
+        case('s'):
         case(KEY_DOWN):
             delta.y += diff;
             break;
