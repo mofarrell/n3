@@ -168,7 +168,7 @@ void Game::gameLoop(){
       }
 
       renderer.draw();
-      refresh();
+      //refresh();
       nanosleep(&tim, &tim2);
       update(delta);
       level++;

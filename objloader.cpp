@@ -1,24 +1,7 @@
-/*The MIT License (MIT)
+/*
  *
- *Copyright (c) 2014 Michael O'Farrell, Bram Wasti
- *
- *Permission is hereby granted, free of charge, to any person obtaining a copy
- *of this software and associated documentation files (the "Software"), to deal
- *in the Software without restriction, including without limitation the rights
- *to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *copies of the Software, and to permit persons to whom the Software is
- *furnished to do so, subject to the following conditions:
- *
- *The above copyright notice and this permission notice shall be included in
- *all copies or substantial portions of the Software.
- *
- *THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *THE SOFTWARE.
+ *  by Calvin
+ *  https://code.google.com/p/opengl-tutorial-org/source/browse/common/objloader.cpp
  *
  */
 
@@ -134,64 +117,4 @@ bool loadOBJ(
 }
 
 
-#ifdef USE_ASSIMP // don't use this #define, it's only for me (it AssImp fails to compile on your machine, at least all the other tutorials still work)
 
-// Include AssImp
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
-
-bool loadAssImp(
-        const char * path, 
-        std::vector<unsigned short> & indices,
-        std::vector<glm::vec3> & vertices,
-        std::vector<glm::vec2> & uvs,
-        std::vector<glm::vec3> & normals
-){
-
-        Assimp::Importer importer;
-
-        const aiScene* scene = importer.ReadFile(path, 0/*aiProcess_JoinIdenticalVertices | aiProcess_SortByPType*/);
-        if( !scene) {
-                //printf( stderr, importer.GetErrorString());
-                getchar();
-                return false;
-        }
-        const aiMesh* mesh = scene->mMeshes[0]; // In this simple example code we always use the 1rst mesh (in OBJ files there is often only one anyway)
-
-        // Fill vertices positions
-        vertices.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
-                aiVector3D pos = mesh->mVertices[i];
-                vertices.push_back(glm::vec3(pos.x, pos.y, pos.z));
-        }
-
-        // Fill vertices texture coordinates
-        uvs.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
-                aiVector3D UVW = mesh->mTextureCoords[0][i]; // Assume only 1 set of UV coords; AssImp supports 8 UV sets.
-                uvs.push_back(glm::vec2(UVW.x, UVW.y));
-        }
-
-        // Fill vertices normals
-        normals.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
-                aiVector3D n = mesh->mNormals[i];
-                normals.push_back(glm::vec3(n.x, n.y, n.z));
-        }
-
-
-        // Fill face indices
-        indices.reserve(3*mesh->mNumFaces);
-        for (unsigned int i=0; i<mesh->mNumFaces; i++){
-                // Assume the model has only triangles.
-                indices.push_back(mesh->mFaces[i].mIndices[0]);
-                indices.push_back(mesh->mFaces[i].mIndices[1]);
-                indices.push_back(mesh->mFaces[i].mIndices[2]);
-        }
-        
-        // The "scene" pointer will be deleted automatically by "importer"
-
-}
-
-#endif
