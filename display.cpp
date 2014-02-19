@@ -99,18 +99,23 @@ static inline int get_color(int r, int g, int b){
                     );*/
 }
 
+const char *sizes = "=+*%%@#";
+
 /* vector drawer
  */
 int n3_vector_draw(std::vector<std::uint8_t> data, int width, int height){
     for (int y=0; y<height; y++){
         for (int x=0; x<width; x++){
+            int intensity = (data[((height-y-1)*width+x)*4] +
+            data[((height-y-1)*width+x)*4+1] + 
+            data[((height-y-1)*width+x)*4+2])/127;
             int color = get_color(
                     data[((height-y-1)*width+x)*4],
                     data[((height-y-1)*width+x)*4+1],
                     data[((height-y-1)*width+x)*4+2]);
             //attron(COLOR_PAIR(color));
             //printf("%d", color);
-            mvaddch(y, x, '#'|COLOR_PAIR(color));
+            mvaddch(y, x, sizes[intensity]|COLOR_PAIR(color));
         }
        // mvaddnstr(y, 0, (char *)data.data(), width);
     }
